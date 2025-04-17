@@ -1,0 +1,19 @@
+{
+	"name": "desktop-pets",
+	"version": "1.0.0",
+	"type": "module",
+	"main": "dist/main.cjs",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build && tsc -p tsconfig.main.json && mv dist/main.js dist/main.cjs",
+		"start": "pnpm build && electron ."
+	},
+	"dependencies": {
+		"electron": "^35.1.5"
+	},
+	"devDependencies": {
+		"@types/node": "^22.14.1",
+		"typescript": "^5.8.3",
+		"vite": "^6.3.1"
+	}
+}
