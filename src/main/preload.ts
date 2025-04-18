@@ -41,5 +41,19 @@ contextBridge.exposeInMainWorld('api', {
 		disk: {
 			space: (format: 'Mb' | 'Gb' = 'Mb') => ipcRenderer.invoke('os:disk:space', format),
 		},
+		cpu: {
+			info: () => ipcRenderer.invoke('os:cpu:info'),
+		},
+		user: {
+			name: () => ipcRenderer.invoke('os:user:name'),
+			uid: () => ipcRenderer.invoke('os:user:uid'),
+			home: () => ipcRenderer.invoke('os:user:home'),
+		},
+		uptime: () => ipcRenderer.invoke('os:uptime'),
+		screen: {
+			size: () => ipcRenderer.invoke('os:screen:size'),
+			scale: () => ipcRenderer.invoke('os:screen:scale'),
+			info: () => ipcRenderer.invoke('os:screen:info'),
+		},
 	},
 })

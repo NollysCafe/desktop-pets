@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, clipboard, powerMonitor, Notification } from 'electron'
+import { app, BrowserWindow, ipcMain, clipboard, powerMonitor, Notification, screen } from 'electron'
 import fs from 'fs'
 import { execSync } from 'node:child_process'
 import os from 'node:os'
@@ -148,3 +148,35 @@ ipcMain.handle('os:disk:space', async (_event, format: 'Mb' | 'Gb' = 'Mb') => {
 		usage: usage.toFixed(2) + '%'
 	}
 })
+
+// OS: CPU
+ipcMain.handle('os:cpu:info', () => {
+	const cpus = os.cpus()
+	const load = cpus.map((cpu) => {
+		const times = cpu.times
+		const total = Object.values(times).reduce((acc, time) => acc + time, 0)
+		return { idle: times.idle, total }
+	})
+	const averageIdle = load.reduce((acc, load) => acc + load.idle, 0) / cpus.length
+	const averageTotal = load.reduce((acc, load) => acc + load.total, 0) / cpus.length
+
+	return {
+		count: cpus.length,
+		model: cpus[0].model,
+		speed: cpus[0].speed + ' MHz',
+		load: ((1 - averageIdle / averageTotal) * 100).toFixed(2) + '%',
+	}
+})
+
+// OS: User
+ipcMain.handle('os:user:name', () => os.userInfo().username)
+ipcMain.handle('os:user:uid', () => os.userInfo().uid)
+ipcMain.handle('os:user:home', () => os.homedir())
+
+// OS: Uptime
+ipcMain.handle('os:uptime', () => os.uptime())
+
+// OS: Screen
+ipcMain.handle('os:screen:size', () => screen.getPrimaryDisplay().workAreaSize)
+ipcMain.handle('os:screen:scale', () => screen.getPrimaryDisplay().scaleFactor)
+ipcMain.handle('os:screen:info', () => screen.getAllDisplays())
