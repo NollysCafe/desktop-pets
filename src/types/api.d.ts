@@ -91,6 +91,10 @@ declare global {
 					workAreaSize: { height: number, width: number }
 				}[]>
 			}
+			volume: {
+				get: () => Promise<number | null>
+				set: (level: number) => Promise<boolean>
+			}
 		}
 	}
 

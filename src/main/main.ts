@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain, clipboard, powerMonitor, Notification, screen } from 'electron'
 import fs from 'fs'
 import { execSync } from 'node:child_process'
+import loudness from 'loudness'
 import os from 'node:os'
 import path from 'node:path'
 import { promisify } from 'node:util'
@@ -180,3 +181,7 @@ ipcMain.handle('os:uptime', () => os.uptime())
 ipcMain.handle('os:screen:size', () => screen.getPrimaryDisplay().workAreaSize)
 ipcMain.handle('os:screen:scale', () => screen.getPrimaryDisplay().scaleFactor)
 ipcMain.handle('os:screen:info', () => screen.getAllDisplays())
+
+// OS: Volume
+ipcMain.handle('os:volume:get', async () => await loudness.getVolume().catch(() => null))
+ipcMain.handle('os:volume:set', async (_event, level: number) => await loudness.setVolume(level).then(() => true).catch(() => false))

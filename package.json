@@ -9,7 +9,8 @@
 		"start": "pnpm build && electron ."
 	},
 	"dependencies": {
-		"electron": "^35.1.5"
+		"electron": "^35.1.5",
+		"loudness": "^0.4.2"
 	},
 	"devDependencies": {
 		"@types/node": "^22.14.1",

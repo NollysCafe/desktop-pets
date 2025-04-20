@@ -55,5 +55,9 @@ contextBridge.exposeInMainWorld('api', {
 			scale: () => ipcRenderer.invoke('os:screen:scale'),
 			info: () => ipcRenderer.invoke('os:screen:info'),
 		},
+		volume: {
+			get: () => ipcRenderer.invoke('os:volume:get'),
+			set: (level: number) => ipcRenderer.invoke('os:volume:set', level),
+		},
 	},
 })
